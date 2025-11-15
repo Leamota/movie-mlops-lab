@@ -1,0 +1,14 @@
+# Core scientific stack
+numpy==1.26.4
+pandas==2.2.2
+scikit-learn==1.5.2
+
+# Visualization
+matplotlib==3.9.2
+seaborn==0.13.2
+
+# MLOps monitoring
+evidently==0.4.31
+
+# Serialization
+joblib==1.4.2
