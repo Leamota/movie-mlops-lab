@@ -26,32 +26,57 @@ movie_drift_demo/
 Follow these steps to reproduce the experiment:
 
 ### 1. Clone the repository
-```bash
-git clone https://github.com/your-username/movie-mlops-lab.git
-cd movie-mlops-lab
+```bash 
+git clone https://github.com/Leamota/movie-mlops-lab.git
+cd movie-mlops-lab 
+
+```
+
+
 
 ### 2. create a virtual environment
-'''bash
+```bash 
 python3 -m venv venv
 source venv/bin/activate   # On Mac/Linux
 venv\Scripts\activate      # On Windows
 
+```
+
+
 ### 3. Install dependencies
+```bash
 pip install -r requirements.txt
 
+```
+
+
 ### 4. Generate synthetic data
+```bash
 python data_simulation.py
 
+```
 
 ### 5. Train the baseline model
+```bash
 python train_baseline.py
 
+```
 
 ### 6. Monitor drift
+```bash
 python monitor_drift.py
 
+```
+
 ### 7. View the report
+```bash
 data_drift_report.html
 
+```
+
+
 ### 8. (Optional) Quick drift alert
+```bash
 python quick_check.py
+
+```
