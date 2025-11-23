@@ -4,6 +4,30 @@
 This repository demonstrates how to apply modern MLOps tools to a movie-streaming scenario.  
 We build a simple recommendation prototype, simulate user behavior, and use **Evidently AI** to monitor data drift in production-like conditions.
 
+---
+
+
+## Strengths, Limitations, and Engineering Decisions
+
+###  Strengths
+- Synthetic data ensures reproducibility and avoids privacy concerns.  
+- Evidently AI provides clear, interpretable drift reports.  
+- Modular pipeline design makes it easy to extend into retraining or streaming workflows.  
+
+###  Limitations
+- Synthetic data may not fully capture the complexity of real‑world streaming platforms.  
+- Baseline model is intentionally simple, so performance metrics are limited.  
+- Current setup focuses on batch monitoring rather than real‑time drift detection.  
+
+###  Engineering Decisions
+- **Evidently AI** chosen for its strong visualization and reporting capabilities.  
+- **Python scripts** used for simplicity and accessibility across environments.  
+- **GitHub Pages** selected for publishing the blog to make results publicly accessible.  
+- **Virtual environment setup** ensures reproducibility across different operating systems.  
+
+---
+
+
 ## Goals
 - Explore the ecosystem of tools for production ML systems.
 - Show how data drift impacts recommendation quality.
