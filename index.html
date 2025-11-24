@@ -58,18 +58,33 @@
       <p class="subtitle">How lightweight monitoring reveals shifting user tastes and keeps recommendations relevant.</p>
     </header>
 
-    <section class="card">
-      <h2>Introduction</h2>
-      <p>
-        Recommendation systems in movie streaming services rely heavily on user behavior to suggest films. But tastes change fast—thrillers may dominate one month, while animated shows surge the next. Without adaptation, machine learning models can quickly become outdated and irrelevant.
-      </p>
-      <p>
-        <strong>Data drift</strong> refers to statistical changes in input data over time. It occurs when incoming data no longer aligns with the data the model was trained on, leading to degraded performance.
-      </p>
-      <p>
-        In this post, I demonstrate how this challenge can be addressed using <strong>Evidently AI</strong>, an open‑source monitoring tool, to detect drift in a simulated movie‑streaming scenario.
-      </p>
-    </section>
+
+<section class="card">
+  <h2>Introduction</h2>
+  <p>
+    Recommendation systems are at the heart of modern movie streaming platforms. They decide which titles appear on a user’s home screen, which genres are promoted, and ultimately how long viewers stay engaged. These systems rely on machine learning models trained on historical user behavior—what people watched, skipped, or rated highly. But the challenge is that user preferences are never static. A blockbuster thriller may dominate one month, while family‑friendly animated shows surge the next. Seasonal trends, cultural events, and even global circumstances can shift what audiences want to see.
+  </p>
+  <p>
+    In production ML systems, this phenomenon is known as <strong>data drift</strong>. Data drift occurs when the statistical properties of input data change over time, making the model’s assumptions less valid. For a streaming service, drift means that recommendations can quickly become outdated, irrelevant, or even frustrating to users. Left unchecked, this silent degradation erodes trust in the platform and increases churn.
+  </p>
+  <p>
+    Detecting and responding to drift is therefore a critical part of <strong>MLOps</strong>—the discipline of running machine learning in production. Unlike the controlled environment of a notebook, production systems must continuously monitor data pipelines, track model performance, and adapt to evolving realities. Without monitoring, teams risk deploying models that look fine on paper but fail in practice.
+  </p>
+  <p>
+    The complexity of streaming platforms adds another layer to the challenge. Millions of users interact with content daily, generating vast amounts of behavioral data. This data is noisy, diverse, and constantly changing. A single viral release can skew viewing patterns overnight, while demographic shifts may gradually reshape long‑term preferences. Models must be resilient enough to handle both sudden shocks and slow, subtle changes.
+  </p>
+  <p>
+    Moreover, recommendation systems are not just technical artifacts—they directly influence business outcomes. Better recommendations mean higher watch times, stronger customer loyalty, and increased revenue. Poor recommendations, on the other hand, can push users toward competitors. Monitoring drift is therefore not only a technical necessity but also a strategic imperative for streaming companies.
+  </p>
+  <p>
+    In this post, I explore how <strong>Evidently AI</strong>, an open‑source monitoring tool, can help address this challenge. Using a simulated movie‑streaming scenario, I demonstrate how Evidently detects shifts in user preferences, surfaces feature drift, and provides actionable insights for retraining workflows. The goal is to show how lightweight monitoring can keep recommendations relevant and ensure that machine learning systems remain aligned with the dynamic world of entertainment.
+  </p>
+</section>
+
+
+
+
+    
 
     <section class="card">
       <h2>Problem addressed</h2>
