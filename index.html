@@ -61,10 +61,10 @@
     <section class="card">
       <h2>Introduction</h2>
       <p>
-        Recommendation systems in movie streaming services rely heavily on user behavior to suggest films. But user tastes change rapidly—thrillers may dominate one month, while animated shows surge the next. Without adaptation, machine learning models can quickly become outdated and irrelevant.
+        Recommendation systems in movie streaming services rely heavily on user behavior to suggest films. But tastes change fast—thrillers may dominate one month, while animated shows surge the next. Without adaptation, machine learning models can quickly become outdated and irrelevant.
       </p>
       <p>
-        <strong>Data drift</strong> refers to statistical changes in input data over time. It occurs when incoming data no longer aligns with the data the model was trained on, leading to degraded performance. 
+        <strong>Data drift</strong> refers to statistical changes in input data over time. It occurs when incoming data no longer aligns with the data the model was trained on, leading to degraded performance.
       </p>
       <p>
         In this post, I demonstrate how this challenge can be addressed using <strong>Evidently AI</strong>, an open‑source monitoring tool, to detect drift in a simulated movie‑streaming scenario.
@@ -79,9 +79,22 @@
     </section>
 
     <section class="card">
+      <h2>Practical use in movie-streaming scenario</h2>
+      <p>
+        I simulated a streaming environment where user logs capture region, device, age group, and genre preferences. A baseline model predicted watch probability from these features and produced reference predictions on historical logs.
+      </p>
+      <p>
+        To emulate changing tastes, I shifted the genre distribution—specifically, a surge in interest for animated shows—creating a current dataset. Evidently AI compared the reference and current datasets and flagged drift in genre features and prediction scores.
+      </p>
+      <p>
+        In a real platform, this setup enables engineers to detect misalignment early, trigger retraining when drift exceeds thresholds, and keep recommendations relevant as trends evolve.
+      </p>
+    </section>
+
+    <section class="card">
       <h2>Baseline model results</h2>
       <p>
-        To predict user behavior, I built a simple watch‑probability model. It predicts whether a user is likely to watch a movie based on region, device, age group, and genre affinities.
+        The watch‑probability model predicts whether a user is likely to watch a title based on region, device, age group, and genre affinities.
       </p>
       <p>Baseline performance:</p>
       <p>
@@ -96,7 +109,7 @@
     <section class="card">
       <h2>Simulating drift</h2>
       <p>
-        To simulate real‑world change, I introduced an increase in interest for animated shows. Comparing the “current” dataset to the “reference,” users became more inclined toward animation. 
+        To simulate real‑world change, I introduced an increase in interest for animated shows. Comparing the “current” dataset to the “reference,” users became more inclined toward animation.
       </p>
       <p>
         In production, shifts in content trends or demographics can quickly diminish the relevance of yesterday’s model.
@@ -118,18 +131,55 @@ report.save_html("data_drift_report.html")</code></pre>
       <p>Opening the dashboard revealed clear changes:</p>
       <ul>
         <li><strong>Feature drift:</strong> <code>genre_anime</code> and <code>aff_anime</code> distributions shifted significantly.</li>
-        <li><strong>Prediction drift:</strong> The model’s score distribution changed, indicating calibration issues.</li>
+        <li><strong>Prediction drift:</strong> The model’s score distribution changed, indicating potential calibration issues.</li>
         <li><strong>Target drift:</strong> Watch outcomes differed between reference and current periods.</li>
       </ul>
       <img class="img" src="images/evidently_report.png" alt="Evidently drift dashboard screenshot" />
     </section>
 
     <section class="card">
-      <h2>Insights and takeaways</h2>
+      <h2>Analysis</h2>
+      <p>
+        The experiment with Evidently AI involved several layers of analysis:
+      </p>
       <ul>
-        <li><strong>Models degrade silently:</strong> Without monitoring, recommendations can become irrelevant without obvious failures.</li>
-        <li><strong>Evidently surfaces instability:</strong> The dashboard highlights which features are drifting, guiding retraining decisions.</li>
-        <li><strong>Operational workflow:</strong> In production, thresholds (e.g., drift share &gt; 0.3) can trigger alerts or automated retraining.</li>
+        <li><strong>Diagnostic analysis:</strong> Using Evidently’s drift report to identify whether input features and predictions were shifting compared to the baseline.</li>
+        <li><strong>Comparative analysis:</strong> Comparing distributions of genres and affinities between the reference and current datasets to highlight changes in user preferences.</li>
+        <li><strong>Performance analysis:</strong> Evaluating baseline ROC‑AUC and PR‑AUC to understand model behavior before drift.</li>
+        <li><strong>Operational analysis:</strong> Considering thresholds and triggers to integrate drift detection into production workflows.</li>
+      </ul>
+      <p>
+        Together, these analyses show not only that drift exists, but also how it impacts model reliability and what actions teams can take to maintain relevance in production ML systems.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2>Strengths, limitations, and lessons learned</h2>
+      <p>
+        Working with Evidently AI in the movie‑streaming scenario revealed both its advantages and areas for improvement:
+      </p>
+      <ul>
+        <li><strong>Strengths:</strong>
+          <ul>
+            <li>Easy Python integration and quick, interpretable HTML reports.</li>
+            <li>Holistic view across feature, prediction, and target drift.</li>
+            <li>Clear visuals that help align engineers and stakeholders.</li>
+          </ul>
+        </li>
+        <li><strong>Limitations:</strong>
+          <ul>
+            <li>Primarily diagnostic—does not prescribe retraining strategies out of the box.</li>
+            <li>Static dashboards unless connected to monitoring systems for alerts.</li>
+            <li>Scaling to very large datasets may require sampling or cloud‑based pipelines.</li>
+          </ul>
+        </li>
+        <li><strong>Lessons learned:</strong>
+          <ul>
+            <li>Models can degrade silently even when headline metrics look stable—monitoring is essential.</li>
+            <li>Drift detection is most effective when paired with automated retraining and validation pipelines.</li>
+            <li>Operational thresholds (e.g., drift share &gt; 0.3) provide a practical guardrail for action.</li>
+          </ul>
+        </li>
       </ul>
       <pre><code># Programmatic summary example
 summary = report.as_dict()
@@ -139,25 +189,40 @@ print(f"Dataset drift: {drifted}, drift share: {drift_share:.2f}")</code></pre>
     </section>
 
     <section class="card">
+
+      <section class="card">
       <h2>Conclusion</h2>
       <p>
-        Continuous monitoring is essential for production ML systems. A movie streaming platform that catches drift early will deliver more relevant recommendations, sustain user engagement, and build trust. 
+        Continuous monitoring is not just a technical add‑on—it is the backbone of reliable production ML systems. In the context of movie streaming, catching drift early ensures that recommendations remain fresh, personalized, and aligned with evolving user interests. Without such monitoring, models can silently degrade, leading to irrelevant suggestions, frustrated users, and ultimately higher churn.
       </p>
       <p>
-        This experiment demonstrates how <strong>Evidently AI</strong> can serve as a lightweight, accessible guardrail for recommendation systems—helping teams detect drift, plan retraining, and keep models aligned with evolving user tastes.
+        This experiment demonstrates how <strong>Evidently AI</strong> provides a practical, lightweight solution for detecting drift. By surfacing feature drift, prediction drift, and target drift, Evidently empowers teams to make informed decisions about retraining and recalibration. Its dashboards make complex statistical changes easy to interpret, bridging the gap between data scientists, engineers, and business stakeholders.
+      </p>
+      <p>
+        In a real production workflow, Evidently can be integrated into pipelines to automatically generate reports, set thresholds for drift detection, and trigger alerts or retraining jobs. For example, if drift share exceeds 0.3, the system could automatically retrain the recommendation model or notify engineers to investigate. This closes the loop between monitoring and adaptation, ensuring models evolve alongside user behavior.
+      </p>
+      <p>
+        The lessons extend beyond streaming. Any domain where data distributions shift—finance, healthcare, retail, or social platforms—faces the same challenge. Monitoring tools like Evidently help organizations maintain trust, transparency, and performance in dynamic environments.
+      </p>
+      <p>
+        The key takeaway: building a model is only the beginning. Sustaining its performance requires a culture of monitoring, iteration, and responsiveness. Evidently AI lowers the barrier to adopting that culture, making drift detection approachable for teams of all sizes. By embedding monitoring into everyday practice, organizations can ensure their ML systems remain robust, relevant, and user‑centric over time.
       </p>
     </section>
+
+
+    
 
     <hr class="hr" />
     <footer>
       <p>
-        Lawrence A. Egharevba | 
-        <strong>Course:</strong> COT 6930: AI and Machine Learning Production | 
-        <strong>Institution:</strong> Florida Atlantic University | 
+        Lawrence A. Egharevba |
+        <strong>Course:</strong> COT 6930: AI and Machine Learning Production |
+        <strong>Institution:</strong> Florida Atlantic University |
         <em>Fall 2025</em>
       </p>
     </footer>
   </main>
 </body>
 </html>
+
 
